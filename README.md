@@ -1,6 +1,6 @@
 # Чтобы запустить  программу нужно ввести в терминал следующие команды:
 // Сначала соберите jar
-mvn clean package
+  mvn clean package
 
 // Запустите jar
 java -jar target\demo-0.0.1-SNAPSHOT.jar
