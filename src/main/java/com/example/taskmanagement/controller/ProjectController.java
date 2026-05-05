@@ -50,7 +50,7 @@ public class ProjectController {
 
     @PostMapping("/{projectId}/users/{userId}")
     public Project assignUser(@PathVariable Long projectId, @PathVariable Long userId) {
-        return service.assignUser(projectId, userId);   // вместо projectService
+        return service.assignUser(projectId, userId);
     }
 
     @GetMapping("/{projectId}/tasks")

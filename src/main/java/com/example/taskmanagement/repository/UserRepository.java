@@ -1,9 +1,15 @@
-// UserRepository.java
 package com.example.taskmanagement.repository;
 
 import com.example.taskmanagement.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public interface UserRepository extends JpaRepository<User, Long> {}
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    // 🔑 Основной метод для Spring Security
+    Optional<User> findByUsername(String username);
+
+    // (опционально, но полезно для регистрации)
+    boolean existsByUsername(String username);
+}

@@ -3,6 +3,7 @@ package com.example.taskmanagement.controller;
 import com.example.taskmanagement.model.Project;
 import com.example.taskmanagement.model.User;
 import com.example.taskmanagement.service.UserService;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    /* ---------------- CRUD ---------------- */
+    /* ===================== GET ===================== */
 
     @GetMapping
     public List<User> getAll() {
@@ -29,26 +30,43 @@ public class UserController {
         return userService.getById(id);
     }
 
+    /* ===================== CREATE ===================== */
+
     @PostMapping
     public User create(@RequestBody User user) {
         return userService.create(user);
     }
 
+    /* ===================== UPDATE ===================== */
+
+    // 👤 пользователь редактирует себя
+    @PutMapping("/me")
+    public User updateMyself(@RequestBody User request,
+                             Authentication auth) {
+
+        String username = auth.getName();
+        return userService.updateMyProfile(username, request);
+    }
+
+    // 🔐 админ редактирует любого
     @PutMapping("/{id}")
-    public User update(@PathVariable Long id, @RequestBody User user) {
-        return userService.update(id, user);
+    public User updateByAdmin(@PathVariable Long id,
+                              @RequestBody User request) {
+
+        return userService.updateByAdmin(id, request);
     }
 
+    /* ===================== DELETE ===================== */
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        userService.delete(id);
+    public void delete(@PathVariable Long id,
+                       Authentication auth) {
+        userService.deleteByAdmin(id, auth.getAuthorities());
     }
 
-    /* ---------------- GET PROJECTS OF USER ---------------- */
+    /* ===================== PROJECTS ===================== */
 
     @GetMapping("/{userId}/projects")
     public List<Project> getUserProjects(@PathVariable Long userId) {
-        User user = userService.getById(userId);
-        return user != null ? user.getProjects() : null;
+        return userService.getUserProjects(userId);
     }
 }
