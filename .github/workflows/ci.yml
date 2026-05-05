@@ -48,19 +48,3 @@ jobs:
         with:
           name: antivirus-app
           path: target/*.jar
-
-      # Дополнительно: загрузка в GitHub Packages (Maven репозиторий)
-      - name: Publish to GitHub Packages
-        run: mvn deploy
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        settings.xml: |
-          <settings>
-            <servers>
-              <server>
-                <id>github</id>
-                <username>${env.GITHUB_ACTOR}</username>
-                <password>${env.GITHUB_TOKEN}</password>
-              </server>
-            </servers>
-          </settings>
